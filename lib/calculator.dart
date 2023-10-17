@@ -12,8 +12,8 @@ class _CalculatorState extends State<Calculator> {
 
   List<String> buttonsList = [
     'C',
-    '(',
-    ')',
+    '+/-',
+    '%',
     '/',
     '7',
     '8',
@@ -126,6 +126,22 @@ class _CalculatorState extends State<Calculator> {
       return;
     }
 
+    if (text == "%") {
+      userInput += '/100';
+      return;
+    }
+
+    if (text == "+/-") {
+      if (userInput.isNotEmpty) {
+        if (userInput[0] == '-') {
+          userInput = userInput.substring(1);
+        } else {
+          userInput = '-' + userInput;
+        }
+      }
+      return;
+    }
+
     userInput = userInput + text;
   }
 
@@ -144,16 +160,14 @@ class _CalculatorState extends State<Calculator> {
         text == "*" ||
         text == "+" ||
         text == "-" ||
-        text == "=") {
+        text == "=" ||
+        text == "+/-" ||
+        text == "%") {
       return Colors.orangeAccent;
     }
     if (text == "C" || text == "AC") {
-      return Color.fromARGB(255, 44, 44, 44);
+      return const Color.fromARGB(255, 44, 44, 44);
     }
-    if (text == "(" || text == ")") {
-      return Colors.blueGrey;
-    }
-
     return const Color.fromARGB(255, 95, 95, 95);
   }
 }
