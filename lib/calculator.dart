@@ -126,11 +126,6 @@ class _CalculatorState extends State<Calculator> {
       return;
     }
 
-    if (text == "%") {
-      userInput += '/100';
-      return;
-    }
-
     if (text == "+/-") {
       if (userInput.isNotEmpty) {
         if (userInput[0] == '-') {
@@ -147,8 +142,16 @@ class _CalculatorState extends State<Calculator> {
 
   String calculate() {
     try {
-      var exp = Parser().parse(userInput);
+      var expression = userInput.replaceAll(
+          "%", "*0.01"); // Convert % to *0.01 for evaluation
+      var exp = Parser().parse(expression);
       var evaluation = exp.evaluate(EvaluationType.REAL, ContextModel());
+
+      if (userInput.contains("%")) {
+        return (evaluation).toStringAsFixed(
+            2); // Display result as a decimal with two decimal places
+      }
+
       return evaluation.toString();
     } catch (e) {
       return "Error";
